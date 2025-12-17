@@ -1,0 +1,75 @@
+sqlite
+
+- gadgets
+	- gadget_id
+	- gadget_name (smartphone, cameras)
+
+- products
+	- product_id
+	- gadget_id
+	- product_name
+	- delivery_day
+	- stock_day
+	- guaranteed_period
+	- price
+
+- specs
+	- spec_id
+	- gadget_id
+	- spec_key
+	- spec_value
+
+- reviews
+	- review_id
+	- product_id
+	- star_numbers
+	- user_id
+	- comment
+
+- users
+	- user_id
+	- first_name
+	- last_name 
+	- password
+	- email
+	- gender
+	- address
+	- city
+	- state
+	- zipcode
+	- is_verified
+
+- user_payments
+	- user_payment_id
+	- user_id
+	- cardholder_name
+	- card_number
+	- exp_date
+	- cvv
+
+
+- carts
+	- cart_id
+	- user_id
+	- product_id
+	- quantity
+	- status ("DRAFT", "PAID")
+
+- wishlists
+	- wishlist_id
+	- product_id
+	- user_id
+
+- shipments
+	- shipment_id
+	- purchase_id
+	- shipment_status
+	- shipment_method ("REGULAR", "FAST", "SCHEDULE")
+	- shipment_date
+
+- purchases
+	- purchase_id
+	- cart_id
+	- purchased_date
+	- total_amount
+	
