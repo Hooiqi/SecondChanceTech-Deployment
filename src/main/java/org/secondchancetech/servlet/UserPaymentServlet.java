@@ -13,12 +13,4 @@ import java.util.List;
 
 @WebServlet("/payments")
 public class UserPaymentServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        UserPaymentDAO dao = new UserPaymentDAO();
-        List<UserPayment> payments = dao.getAllPayments();
-        req.setAttribute("payments", payments);
-        req.getRequestDispatcher("/jsp/payments.jsp").forward(req, resp);
-    }
 }

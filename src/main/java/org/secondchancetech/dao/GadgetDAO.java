@@ -1,31 +1,107 @@
 package org.secondchancetech.dao;
 
 import org.secondchancetech.model.Gadget;
+import org.secondchancetech.util.DBUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.secondchancetech.util.DBUtil;
-
 
 public class GadgetDAO {
 
+    // ---------- CREATE ----------
+    public void createGadget(Gadget gadget) throws SQLException {
+        String sql = "INSERT INTO gadget (name, image_path) VALUES (?, ?)";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, gadget.getName());
+            ps.setString(2, gadget.getImagePath()); // store path
+            ps.executeUpdate();
+        }
+    }
+
+    // ---------- READ ----------
+    public Gadget getGadgetById(int gadgetId) {
+        String sql = "SELECT * FROM gadget WHERE gadget_id = ?";
+        Gadget gadget = null;
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, gadgetId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    gadget = mapRow(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gadget;
+    }
+
     public List<Gadget> getAllGadgets() {
         List<Gadget> list = new ArrayList<>();
-        String sql = "SELECT * FROM gadgets";
+        String sql = "SELECT * FROM gadget ORDER BY name";
+
         try (Connection conn = DBUtil.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Gadget g = new Gadget();
-                g.setGadgetId(rs.getInt("gadget_id"));
-                g.setName(rs.getString("name"));
-                list.add(g);
+                list.add(mapRow(rs));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // ---------- UPDATE ----------
+    public boolean updateGadget(Gadget gadget) {
+        String sql = "UPDATE gadget SET name = ?, image_path = ? WHERE gadget_id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, gadget.getName());
+            ps.setString(2, gadget.getImagePath());
+            ps.setInt(3, gadget.getGadgetId());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ---------- DELETE ----------
+    public boolean deleteGadget(int gadgetId) {
+        String sql = "DELETE FROM gadget WHERE gadget_id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, gadgetId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ---------- MAPPER ----------
+    private Gadget mapRow(ResultSet rs) throws SQLException {
+        Gadget g = new Gadget();
+        g.setGadgetId(rs.getInt("gadget_id"));
+        g.setName(rs.getString("name"));
+        g.setImagePath(rs.getString("image_path"));
+        return g;
     }
 }

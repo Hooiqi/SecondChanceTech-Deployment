@@ -13,12 +13,4 @@ import java.util.List;
 
 @WebServlet("/wishlist")
 public class WishlistServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        WishlistDAO dao = new WishlistDAO();
-        List<Wishlist> wishlist = dao.getAllWishlist();
-        req.setAttribute("wishlist", wishlist);
-        req.getRequestDispatcher("/jsp/wishlist.jsp").forward(req, resp);
-    }
 }
