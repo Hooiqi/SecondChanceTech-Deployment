@@ -15,19 +15,21 @@ public class AuthService {
     }
 
     // ---------- REGISTER ----------
-    public boolean registerUser(User user) {
+    public User registerUser(User user) {
         // hash password before saving
         user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
         user.setVerified(false); // default not verified
 
         try {
-            userDAO.createUser(user);
-            return true;
+            int userId = userDAO.createUser(user);
+            user.setUserId(userId); // set the generated ID to user object
+            return user; // now the user object has the ID!
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
+
 
     // ---------- LOGIN ----------
     public User login(String email, String password) {

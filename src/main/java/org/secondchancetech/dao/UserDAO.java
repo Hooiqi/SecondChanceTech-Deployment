@@ -10,15 +10,15 @@ import java.util.List;
 public class UserDAO {
 
     // ---------- CREATE ----------
-    public void createUser(User user) throws SQLException {
+    public int createUser(User user) throws SQLException {
         String sql = """
-            INSERT INTO user
-            (first_name, last_name, password, email, gender, address, city, state, zipcode, is_verified)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+        INSERT INTO user
+        (first_name, last_name, password, email, gender, address, city, state, zipcode, is_verified)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
 
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -32,8 +32,17 @@ public class UserDAO {
             ps.setBoolean(10, user.isVerified());
 
             ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // return the generated user ID
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
         }
     }
+
 
     // ---------- READ ----------
     public User getUserById(int userId) {

@@ -11,13 +11,12 @@ public class GadgetDAO {
 
     // ---------- CREATE ----------
     public void createGadget(Gadget gadget) throws SQLException {
-        String sql = "INSERT INTO gadget (name, image_path) VALUES (?, ?)";
+        String sql = "INSERT INTO gadget (name) VALUES (?)";
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, gadget.getName());
-            ps.setString(2, gadget.getImagePath()); // store path
             ps.executeUpdate();
         }
     }
@@ -63,14 +62,13 @@ public class GadgetDAO {
 
     // ---------- UPDATE ----------
     public boolean updateGadget(Gadget gadget) {
-        String sql = "UPDATE gadget SET name = ?, image_path = ? WHERE gadget_id = ?";
+        String sql = "UPDATE gadget SET name = ? WHERE gadget_id = ?";
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, gadget.getName());
-            ps.setString(2, gadget.getImagePath());
-            ps.setInt(3, gadget.getGadgetId());
+            ps.setInt(2, gadget.getGadgetId());
 
             return ps.executeUpdate() > 0;
 
@@ -101,7 +99,6 @@ public class GadgetDAO {
         Gadget g = new Gadget();
         g.setGadgetId(rs.getInt("gadget_id"));
         g.setName(rs.getString("name"));
-        g.setImagePath(rs.getString("image_path"));
         return g;
     }
 }

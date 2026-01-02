@@ -39,11 +39,12 @@ public class SignupServlet extends HttpServlet {
         user.setEmail(req.getParameter("email"));
         user.setPassword(password);
 
-        boolean created = authService.registerUser(user);
+        User createdUser = authService.registerUser(user);
 
-        if (created) {
+        if (createdUser != null) {
+            req.getSession().setAttribute("currentUser", createdUser);
             req.setAttribute("success", "Account created! Please login.");
-            req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req, resp);
+            resp.sendRedirect("register");
         } else {
             req.setAttribute("error", "Failed to create account. Try again.");
             req.getRequestDispatcher("/WEB-INF/views/auth/signup.jsp").forward(req, resp);

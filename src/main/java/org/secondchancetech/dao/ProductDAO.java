@@ -13,18 +13,19 @@ public class ProductDAO {
     public void createProduct(Product product) throws SQLException {
         String sql = """
             INSERT INTO product
-            (gadget_id, delivery_day, stock_day, guaranteed_period, price)
-            VALUES (?, ?, ?, ?, ?)
+            (gadget_id, name, image_path, delivery_day, guaranteed_period, price)
+            VALUES (?, ?, ?, ?, ?, ?)
         """;
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, product.getGadgetId());
-            ps.setInt(2, product.getDeliveryDay());
-            ps.setInt(3, product.getStockDay());
-            ps.setInt(4, product.getGuaranteedPeriod());
-            ps.setDouble(5, product.getPrice());
+            ps.setString(2, product.getName());
+            ps.setString(3, product.getImagePath());
+            ps.setInt(4, product.getDeliveryDay());
+            ps.setInt(5, product.getGuaranteedPeriod());
+            ps.setDouble(6, product.getPrice());
 
             ps.executeUpdate();
         }
@@ -94,8 +95,9 @@ public class ProductDAO {
         String sql = """
             UPDATE product SET
                 gadget_id = ?,
+                name = ?,
+                image_path = ?,
                 delivery_day = ?,
-                stock_day = ?,
                 guaranteed_period = ?,
                 price = ?
             WHERE product_id = ?
@@ -105,11 +107,12 @@ public class ProductDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, product.getGadgetId());
-            ps.setInt(2, product.getDeliveryDay());
-            ps.setInt(3, product.getStockDay());
-            ps.setInt(4, product.getGuaranteedPeriod());
-            ps.setDouble(5, product.getPrice());
-            ps.setInt(6, product.getProductId());
+            ps.setString(2, product.getName());
+            ps.setString(3, product.getImagePath());
+            ps.setInt(4, product.getDeliveryDay());
+            ps.setInt(5, product.getGuaranteedPeriod());
+            ps.setDouble(6, product.getPrice());
+            ps.setInt(7, product.getProductId());
 
             return ps.executeUpdate() > 0;
 
@@ -140,8 +143,9 @@ public class ProductDAO {
         Product p = new Product();
         p.setProductId(rs.getInt("product_id"));
         p.setGadgetId(rs.getInt("gadget_id"));
+        p.setName(rs.getString("name"));
+        p.setImagePath(rs.getString("image_path"));
         p.setDeliveryDay(rs.getInt("delivery_day"));
-        p.setStockDay(rs.getInt("stock_day"));
         p.setGuaranteedPeriod(rs.getInt("guaranteed_period"));
         p.setPrice(rs.getDouble("price"));
         return p;

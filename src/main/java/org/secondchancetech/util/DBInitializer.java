@@ -33,7 +33,6 @@ public class DBInitializer {
                 CREATE TABLE IF NOT EXISTS gadget (
                     gadget_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL
-                    imagePath TEXT NOT NULl
                 )
             """;
             stmt.execute(gadgetTable);
@@ -47,6 +46,7 @@ public class DBInitializer {
                     stock_day INTEGER,
                     guaranteed_period INTEGER,
                     price REAL,
+                    image_path TEXT,
                     FOREIGN KEY (gadget_id) REFERENCES gadget(gadget_id)
                 )
             """;
