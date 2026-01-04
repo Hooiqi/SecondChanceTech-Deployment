@@ -19,6 +19,6 @@ public class GadgetServlet extends HttpServlet {
         GadgetDAO dao = new GadgetDAO();
         List<Gadget> gadgets = dao.getAllGadgets();
         req.setAttribute("gadgets", gadgets);
-        req.getRequestDispatcher("/jsp/gadgets.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(req, resp);
     }
 }

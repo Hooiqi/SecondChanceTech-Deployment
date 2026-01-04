@@ -1,0 +1,13 @@
+:root {
+    --main-milk-white: #FFFFFF;        
+    --nav-dark-blue: #435663;          
+    --footer-dark: #313647;            
+    --bg-light-gray: #F5F5F5;          
+    --accent-green: #A3B087;          
+    --border-light: rgba(131, 131, 131, 0.5);
+    --text-primary: #313647;
+
+    --font-main: 'Droid Sans', sans-serif;
+    --font-heading: 'Roboto Mono', monospace;
+    --font-body: 'Hind', sans-serif;   
+}
