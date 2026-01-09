@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,19 +65,22 @@
 
             <div id="new-arrival" class="tab-content active">
                 <div class="product-grid">
-                    <c:forEach var="item" items="${products}">
+                    <%-- Use 'newArrivals' to match what the HomeServlet sends --%>
+                    <c:forEach var="item" items="${newArrivals}">
                         <div class="product-card reveal">
                             <div class="product-image">
-                                <img src="${pageContext.request.contextPath}/assets/product_${item.gadgetId}.png" alt="Product Image">
+                                <img src="${pageContext.request.contextPath}/assets${item.imagePath}" alt="${item.name}">
                             </div>
                             <div class="product-info">
-                                <p class="product-name">Product ID: ${item.productId}</p>
+                                <p class="product-name">${item.name}</p>
                                 <p class="product-price">RM ${item.price}</p>
-                                <button class="buy-btn" onclick="location.href='${pageContext.request.contextPath}/ProductServlet?id=${item.productId}'">Buy Now</button>
+                                <%-- Use gadgetId to ensure the ProductServlet finds the right record --%>
+                                <button class="buy-btn" onclick="location.href='${pageContext.request.contextPath}/product-details?id=${item.gadgetId}'">Buy Now</button>
                             </div>
                         </div>
                     </c:forEach>
-                    <c:if test="${empty products}">
+
+                    <c:if test="${empty newArrivals}">
                         <p class="no-data">No new arrivals available.</p>
                     </c:if>
                 </div>
@@ -87,7 +91,7 @@
                     <c:forEach var="item" items="${recommended}">
                         <div class="product-card reveal">
                             <div class="product-image">
-                                <img src="${pageContext.request.contextPath}/assets/product_${item.gadgetId}.png" alt="Product Image">
+                                 <img src="${pageContext.request.contextPath}/assets${item.imagePath}" alt="${item.name}">
                             </div>
                             <div class="product-info">
                                 <p class="product-name">Product ID: ${item.productId}</p>
@@ -106,7 +110,7 @@
                 <c:forEach var="item" items="${products}">
                     <div class="product-card reveal">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/assets/product_${item.gadgetId}.png" alt="">
+                            <img src="${pageContext.request.contextPath}/assets${item.imagePath}" alt="${item.name}">
                         </div>
                         <div class="product-info">
                             <p class="product-name">Product ID: ${item.productId}</p>

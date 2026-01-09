@@ -6,6 +6,6 @@
 <body>
 <h2>Welcome Page</h2>
 
-<a href="home">Go to Home</a>
+<a href="${pageContext.request.contextPath}/home">Home</a>
 </body>
 </html>

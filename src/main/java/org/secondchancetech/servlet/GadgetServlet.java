@@ -14,19 +14,26 @@ import java.util.List;
 @WebServlet("/gadgets")
 public class GadgetServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GadgetDAO dao = new GadgetDAO();
 
-        // This calls your updated method that joins gadget and product tables
-        List<Gadget> gadgets = dao.getAllGadgets();
+        // 1. Capture inputs from Homepage search or Category filters
+        String searchQuery = req.getParameter("search");
+        String category = req.getParameter("type");
+        String minP = req.getParameter("minPrice");
+        String maxP = req.getParameter("maxPrice");
 
-        // Pass the list to the JSP. The name "gadgets" must match ${gadgets} in your category.jsp
+        // 2. Convert price strings to Doubles
+        Double minPrice = (minP != null && !minP.isEmpty()) ? Double.parseDouble(minP) : null;
+        Double maxPrice = (maxP != null && !maxP.isEmpty()) ? Double.parseDouble(maxP) : null;
+
+        // 3. Fetch filtered results
+        List<Gadget> gadgets = dao.searchAndFilter(searchQuery, category, minPrice, maxPrice);
+
+        // 4. Send data back to category.jsp
         req.setAttribute("gadgets", gadgets);
-        req.setAttribute("categoryTitle", "ALL PRODUCTS");
+        req.setAttribute("categoryTitle", (category != null) ? category.toUpperCase() : "SEARCH RESULTS");
 
-        // Forward to your view
         req.getRequestDispatcher("/WEB-INF/views/category.jsp").forward(req, resp);
     }
 }

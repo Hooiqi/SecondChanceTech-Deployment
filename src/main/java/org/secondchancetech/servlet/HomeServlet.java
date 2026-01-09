@@ -12,17 +12,12 @@ import java.util.List;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GadgetDAO dao = new GadgetDAO();
-        // Fetch products for the homepage
-        List<Gadget> products = dao.getAllGadgets();
+        List<Gadget> allProducts = dao.getAllGadgets();
+        List<Gadget> arrivals = allProducts.stream().limit(4).toList();
 
-        // Pass the list to home.jsp. Use the name "products" to match your JSP loop
-        req.setAttribute("products", products);
+        req.setAttribute("newArrivals", arrivals);
 
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
     }
