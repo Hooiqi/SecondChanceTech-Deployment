@@ -12,11 +12,17 @@ sqlite
 	- stock_day
 	- guaranteed_period
 	- price
+	- image_path
 
-- specs
+- gadget_specs
 	- spec_id
 	- gadget_id
 	- spec_key
+
+- product_specs
+	- product_spec_id
+	- product_id
+	- gadget_spec_id
 	- spec_value
 
 - reviews

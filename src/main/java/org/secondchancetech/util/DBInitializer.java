@@ -20,6 +20,7 @@ public class DBInitializer {
                     password TEXT NOT NULL,
                     gender TEXT,
                     address TEXT,
+                    phone TEXT,
                     city TEXT,
                     state TEXT,
                     zipcode TEXT,
@@ -37,13 +38,23 @@ public class DBInitializer {
             """;
             stmt.execute(gadgetTable);
 
+            // ---------------- GADGET SPEC (SPEC TEMPLATE) ----------------
+            String specTable = """
+                CREATE TABLE IF NOT EXISTS spec (
+                    gadget_spec_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    gadget_id INTEGER NOT NULL,
+                    spec_key TEXT NOT NULL,
+                    FOREIGN KEY (gadget_id) REFERENCES gadget(gadget_id)
+                )
+            """;
+            stmt.execute(specTable);
+
             // ---------------- PRODUCT ----------------
             String productTable = """
                 CREATE TABLE IF NOT EXISTS product (
                     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     gadget_id INTEGER,
                     delivery_day INTEGER,
-                    stock_day INTEGER,
                     guaranteed_period INTEGER,
                     price REAL,
                     image_path TEXT,
@@ -51,6 +62,19 @@ public class DBInitializer {
                 )
             """;
             stmt.execute(productTable);
+
+            // ---------------- PRODUCT SPEC (ACTUAL VALUES) ----------------
+            String productSpecTable = """
+                CREATE TABLE IF NOT EXISTS product_spec (
+                    product_spec_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    product_id INTEGER NOT NULL,
+                    gadget_spec_id INTEGER NOT NULL,
+                    spec_value TEXT NOT NULL,
+                    FOREIGN KEY (product_id) REFERENCES product(product_id),
+                    FOREIGN KEY (gadget_spec_id) REFERENCES gadget_spec(gadget_spec_id)
+                )
+            """;
+            stmt.execute(productSpecTable);
 
             // ---------------- CART ----------------
             String cartTable = """
@@ -91,18 +115,6 @@ public class DBInitializer {
                 )
             """;
             stmt.execute(reviewTable);
-
-            // ---------------- SPEC ----------------
-            String specTable = """
-                CREATE TABLE IF NOT EXISTS spec (
-                    spec_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    gadget_id INTEGER,
-                    key TEXT,
-                    value TEXT,
-                    FOREIGN KEY (gadget_id) REFERENCES gadget(gadget_id)
-                )
-            """;
-            stmt.execute(specTable);
 
             // ---------------- USER PAYMENT ----------------
             String userPaymentTable = """

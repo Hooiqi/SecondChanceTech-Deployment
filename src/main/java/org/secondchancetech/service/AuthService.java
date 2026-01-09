@@ -18,12 +18,12 @@ public class AuthService {
     public User registerUser(User user) {
         // hash password before saving
         user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
-        user.setVerified(false); // default not verified
+        user.setVerified(false);
 
         try {
             int userId = userDAO.createUser(user);
-            user.setUserId(userId); // set the generated ID to user object
-            return user; // now the user object has the ID!
+            user.setUserId(userId);
+            return user;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -52,7 +52,4 @@ public class AuthService {
         user.setVerified(true);
         return userDAO.updateUser(user);
     }
-
-    // ---------- OPTIONAL: JWT ----------
-    // You can add methods to generate JWT token if needed for your servlet sessions
 }

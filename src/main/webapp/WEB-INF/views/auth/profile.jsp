@@ -115,10 +115,10 @@
   <div class="right">
     <div class="form-box">
 
-      <h1>Register</h1>
-      <p>Complete the form below to set up your profile</p>
+      <h1>User Profile</h1>
+      <p>Set Up Your Profile Details</p>
 
-      <form action="register" method="post" class="grid-2">
+      <form action="profile" method="post" class="grid-2">
 
         <div class="form-group">
           <label>First Name</label>
@@ -173,15 +173,8 @@
         </div>
 
         <div class="form-group full">
-          <label>
-            <input type="checkbox" required>
-            I have read and agree to the Terms and Conditions
-          </label>
-        </div>
-
-        <div class="form-group full">
           <button class="submit-btn" type="submit" style="color: var(--text-secondary); font-weight: bold">
-            Register
+            Update
           </button>
         </div>
 
