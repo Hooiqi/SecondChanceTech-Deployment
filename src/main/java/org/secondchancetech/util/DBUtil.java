@@ -15,7 +15,7 @@ public class DBUtil {
 
             // dynamic cross-platform path
             String userHome = System.getProperty("user.home");
-            File folder = new File(userHome + "/secondchancetech/data");
+            File folder = new File(userHome + "/secondchancetech");
             if (!folder.exists()) folder.mkdirs();
 
             DB_URL = "jdbc:sqlite:" + folder.getAbsolutePath() + "/app.db";

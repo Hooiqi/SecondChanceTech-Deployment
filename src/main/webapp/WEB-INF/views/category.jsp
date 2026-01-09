@@ -28,50 +28,78 @@
         <div class="category-layout">
             <aside class="filter-sidebar">
                 <div class="filter-group">
-                    <h3 class="filter-title" onclick="toggleFilter(this)">Price</h3>
+                    <h3 class="filter-title">Price</h3>
                     <div class="filter-content price-inputs">
-                        <input type="number" id="min-price" placeholder="From">
-                        <input type="number" id="max-price" placeholder="To">
+                        <input type="number" id="min-price" name="minPrice" placeholder="From" value="${param.minPrice}">
+                        <input type="number" id="max-price" name="maxPrice" placeholder="To" value="${param.maxPrice}">
                     </div>
                 </div>
 
-                <div class="filter-group">
-                    <h3 class="filter-title" onclick="toggleFilter(this)">Brand</h3>
-                    <div class="filter-content">
-                        <div class="sidebar-search">
-                            <img src="${pageContext.request.contextPath}/assets/icon search.png" alt="Search">
-                            <input type="text" id="brand-search" placeholder="Search Brand">
-                        </div>
-                        <div class="checkbox-list" id="brand-filter-list">
-                            <label class="checkbox-item">
-                                <div><input type="checkbox" name="brand" value="Apple"> Apple</div>
-                                <span class="brand-count">0</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <div><input type="checkbox" name="brand" value="Samsung"> Samsung</div>
-                                <span class="brand-count">0</span>
-                            </label>
+                <c:choose>
+                    <%-- Filters for PHONES --%>
+                    <c:when test="${param.type == 'phones'}">
+                        <div class="filter-group">
+                            <h3 class="filter-title">RAM</h3>
+                            <div class="checkbox-list">
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="8GB"> 8GB</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="12GB"> 12GB</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="16GB"> 16GB</label>
                             </div>
-                    </div>
-                </div>
-                <div class="filter-actions">
-                    <button type="button" class="apply-btn" onclick="applyFilters()">Apply Filters</button>
-                    <button type="button" class="reset-btn" onclick="resetFilters()">Reset</button>
+                        </div>
+                        <div class="filter-group">
+                            <h3 class="filter-title">Storage</h3>
+                            <div class="checkbox-list">
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="128GB"> 128GB</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="256GB"> 256GB</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="512GB"> 512GB</label>
+                            </div>
+                        </div>
+                    </c:when>
+
+                    <%-- Filters for CAMERAS --%>
+                    <c:when test="${param.type == 'cameras'}">
+                        <div class="filter-group">
+                            <h3 class="filter-title">Resolution</h3>
+                            <div class="checkbox-list">
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="20MP"> 20MP</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="24MP"> 24MP</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="45MP"> 45MP</label>
+                            </div>
+                        </div>
+                    </c:when>
+
+                    <%-- Default: Show Brand for other categories --%>
+                    <c:otherwise>
+                        <div class="filter-group">
+                            <h3 class="filter-title">Brand</h3>
+                            <div class="checkbox-list">
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="Apple"> Apple</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="Samsung"> Samsung</label>
+                                <label class="checkbox-item"><input type="checkbox" name="spec" value="Sony"> Sony</label>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
+                <div class="filter-actions-container">
+                    <button type="button" class="btn-primary-filter" onclick="applyFilters()">Apply Filters</button>
+                    <button type="button" class="btn-secondary-filter" onclick="resetFilters()">Reset All</button>
                 </div>
 
                 <script>
                 function applyFilters() {
-                    const minPrice = document.getElementById('min-price').value;
-                    const maxPrice = document.getElementById('max-price').value;
-                    const brands = Array.from(document.querySelectorAll('input[name="brand"]:checked'))
-                                        .map(cb => cb.value).join(',');
-
-                    // Get the current category from the URL parameter
                     const urlParams = new URLSearchParams(window.location.search);
                     const type = urlParams.get('type') || '';
+                    const minPrice = document.getElementById('min-price').value;
+                    const maxPrice = document.getElementById('max-price').value;
 
-                    // Redirect with filter parameters
-                    window.location.href = `gadgets?type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}&brands=${brands}`;
+                    // Collect all checked specification values
+                    const checkedSpecs = Array.from(document.querySelectorAll('input[name="spec"]:checked'))
+                                              .map(cb => cb.value)
+                                              .join(',');
+
+                    // Redirect using standard JS (No EL encodeURIComponent needed)
+                    window.location.href = `gadgets?type=${type}&minPrice=${minPrice}&maxPrice=${maxPrice}&specs=` + encodeURIComponent(checkedSpecs);
                 }
 
                 function resetFilters() {
@@ -79,8 +107,7 @@
                     window.location.href = `gadgets?type=${urlParams.get('type') || ''}`;
                 }
                 </script>
-
-                </aside>
+            </aside>
 
             <section class="product-listing">
                 <div class="listing-toolbar">
@@ -97,7 +124,7 @@
                     <c:forEach var="item" items="${gadgets}">
                         <div class="product-card reveal">
                             <div class="product-image">
-                                <img src="${pageContext.request.contextPath}/assets/${item.name}.png" alt="${item.name}">
+                                <img src="${pageContext.request.contextPath}/assets${item.imagePath}" alt="${item.name}">
                             </div>
                             <div class="product-info">
                                 <h3 class="product-name">${item.name}</h3>
