@@ -1,0 +1,239 @@
+.category-page {
+    padding: 40px 160px;
+    background-color: var(--main-milk-white);
+}
+
+.breadcrumb {
+    font-family: var(--font-main);
+    font-size: 14px;
+    color: #A4A4A4;
+    margin-bottom: 24px;
+}
+
+.breadcrumb a { 
+    text-decoration: none; 
+    color: #A4A4A4; 
+    transition: color 0.2s;
+}
+
+.breadcrumb a:hover { color: var(--footer-dark); }
+.breadcrumb strong { color: var(--footer-dark); }
+
+.category-layout {
+    display: flex;
+    gap: 40px; 
+    align-items: flex-start;
+}
+
+.category-grid {
+    display: grid !important; 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+}
+
+.filter-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+}
+
+.filter-group {
+    border-bottom: 1px solid #E5E5E5;
+    padding: 24px 0;
+}
+
+.filter-title {
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    cursor: pointer;
+    font-family: var(--font-main);
+}
+
+.filter-title::after {
+    content: '⌃'; 
+    font-size: 12px;
+    transform: rotate(0deg);
+}
+
+.price-inputs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.price-inputs input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #D1D1D1;
+    border-radius: 6px;
+    font-family: var(--font-main);
+}
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-item {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: var(--font-main);
+}
+
+.checkbox-item div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand-count, .spec-count { 
+    color: #A4A4A4; 
+    font-weight: 400;
+}
+
+.product-listing { 
+    flex-grow: 1; 
+}
+
+.listing-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-family: var(--font-main);
+}
+
+.sort-dropdown {
+    padding: 8px 12px;
+    border: 1px solid #E5E5E5;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.sidebar-search {
+    background: #F5F5F5;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.sidebar-search img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+}
+
+.sidebar-search input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    font-family: var(--font-main);
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.filter-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 0;
+}
+
+.filter-title::after {
+    content: '⌃'; 
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.filter-group.collapsed .filter-title::after {
+    transform: rotate(180deg);
+}
+
+.filter-group.collapsed .filter-content {
+    display: none;
+}
+
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.filter-actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-primary-filter {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-primary-filter:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary-filter {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary-filter:hover {
+    background-color: #f8f9fa;
+    color: var(--text-main);
+    border-color: var(--text-main);
+}
+
+
+.sidebar-search {
+    display: none;
+}

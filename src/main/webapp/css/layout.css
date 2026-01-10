@@ -1,0 +1,113 @@
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-main); background: var(--main-milk-white); }
+
+.top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+    padding: 0 118px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 681px;
+    height: 56px;
+    padding: 0 24px;
+    background: var(--bg-light-gray);
+    border-radius: 40px;
+    border: 1px solid var(--border-light);
+}
+
+.search-input {
+    flex: 1; 
+    border: none; 
+    background: transparent;
+    outline: none; 
+    font-family: var(--font-main);
+    font-size: 16px;
+    color: var(--footer-dark);
+}
+
+.nav-links { display: flex; gap: 52px; }
+.nav-links a { text-decoration: none; color: var(--footer-dark); }
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 35px; 
+}
+
+.header-icons img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.category-nav {
+    background: var(--nav-dark-blue);
+    padding: 12px 160px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.category-nav a {
+    text-decoration: none; 
+    color: white;
+    display: flex;          
+    align-items: center;
+    gap: 10px;   
+    opacity: 0.8;
+}          
+
+.category-nav img {
+    width: 24px;  
+    height: 24px;
+    object-fit: contain;
+}
+
+.category-item { color: white; opacity: 0.8; cursor: pointer; }
+
+.main-footer {
+    background: var(--footer-dark);
+    padding: 60px 140px; 
+    color: white;
+    font-family: var(--font-body); 
+}
+.footer-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start; 
+    gap: 100px; 
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 800px;
+}
+
+.footer-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    opacity: 0.8;
+}
+
+.footer-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.7;
+}
+
+.copyright {
+    font-size: 12px;
+    margin-top: 20px;
+    opacity: 0.5;
+}
