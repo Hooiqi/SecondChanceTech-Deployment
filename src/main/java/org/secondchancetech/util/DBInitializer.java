@@ -53,6 +53,7 @@ public class DBInitializer {
             String productTable = """
                 CREATE TABLE IF NOT EXISTS product (
                     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
                     gadget_id INTEGER,
                     delivery_day INTEGER,
                     guaranteed_period INTEGER,
@@ -71,7 +72,7 @@ public class DBInitializer {
                     gadget_spec_id INTEGER NOT NULL,
                     spec_value TEXT NOT NULL,
                     FOREIGN KEY (product_id) REFERENCES product(product_id),
-                    FOREIGN KEY (gadget_spec_id) REFERENCES gadget_spec(gadget_spec_id)
+                    FOREIGN KEY (gadget_spec_id) REFERENCES spec(spec_id)
                 )
             """;
             stmt.execute(productSpecTable);

@@ -9,6 +9,8 @@ public class Product {
     private int guaranteedPeriod;
     private double price;
 
+    private Gadget gadget;
+
     public int getProductId() { return productId; }
     public void setProductId(int productId) { this.productId = productId; }
     public int getGadgetId() { return gadgetId; }
@@ -23,4 +25,7 @@ public class Product {
     public void setGuaranteedPeriod(int guaranteedPeriod) { this.guaranteedPeriod = guaranteedPeriod; }
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+
+    public Gadget getGadget() { return gadget; }
+    public void setGadget(Gadget gadget) { this.gadget = gadget; }
 }

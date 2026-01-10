@@ -14,7 +14,7 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GadgetDAO dao = new GadgetDAO();
-        List<Gadget> allProducts = dao.getAllGadgets();
+        List<Gadget> allProducts = null;
 
         req.setAttribute("newArrivals", allProducts.stream().limit(4).toList());
         req.setAttribute("recommended", allProducts.stream().skip(4).limit(4).toList());

@@ -41,3 +41,4 @@ build/
 ### Files ###
 .app.db
 .idea/
+src/main/webapp/assets/images/

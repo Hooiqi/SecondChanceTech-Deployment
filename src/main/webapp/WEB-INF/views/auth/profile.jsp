@@ -114,8 +114,31 @@
   <!-- RIGHT FORM -->
   <div class="right">
     <div class="form-box">
+      
+    <div style="display: flex; align-items: center; gap: 1rem; padding: 8px 0;">
+        <button onclick="window.history.back()" 
+                style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 36px;
+                    height: 36px;
+                    font-size: 18px;
+                    cursor: pointer;
+                    border:1px solid white;
+                    border-radius: 50%;
+                    background:transparent;
+                    color:white;
+                    transition: background 0.15s, color 0.3s;
+                "
+                onMouseOver="this.style.background='white'; this.style.color='#2f3447';"
+                >
+            &#8592;
+        </button>
+        <h1 style="margin: 0; font-size: 1.5rem;">User Profile</h1>
+    </div>
 
-      <h1>User Profile</h1>
+
       <p>Set Up Your Profile Details</p>
 
       <form action="profile" method="post" class="grid-2">
