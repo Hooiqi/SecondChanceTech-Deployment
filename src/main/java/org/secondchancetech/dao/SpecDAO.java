@@ -20,8 +20,7 @@ public class SpecDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, spec.getGadgetId());
-            ps.setString(2, spec.getKey());
-            ps.setString(3, spec.getValue());
+            ps.setString(2, spec.getSpecKey());
 
             ps.executeUpdate();
         }
@@ -93,8 +92,7 @@ public class SpecDAO {
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, spec.getKey());
-            ps.setString(2, spec.getValue());
+            ps.setString(1, spec.getSpecKey());
             ps.setInt(3, spec.getSpecId());
 
             return ps.executeUpdate() > 0;
@@ -126,8 +124,7 @@ public class SpecDAO {
         Spec s = new Spec();
         s.setSpecId(rs.getInt("spec_id"));
         s.setGadgetId(rs.getInt("gadget_id"));
-        s.setKey(rs.getString("key"));
-        s.setValue(rs.getString("value"));
+        s.setSpecKey(rs.getString("spec_key"));
         return s;
     }
 }

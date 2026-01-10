@@ -13,8 +13,8 @@ public class UserDAO {
     public int createUser(User user) throws SQLException {
         String sql = """
         INSERT INTO user
-        (first_name, last_name, password, email, gender, address, city, state, zipcode, is_verified)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (first_name, last_name, password, email, gender, phone, address, city, state, zipcode, is_verified)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
         try (Connection conn = DBUtil.getConnection();
@@ -25,6 +25,7 @@ public class UserDAO {
             ps.setString(3, user.getPassword()); // hash it before saving!
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getGender());
+            ps.setString(6, user.getPhone());
             ps.setString(6, user.getAddress());
             ps.setString(7, user.getCity());
             ps.setString(8, user.getState());
@@ -111,7 +112,7 @@ public class UserDAO {
         String sql = """
             UPDATE user SET
                 first_name = ?, last_name = ?, password = ?, gender = ?,
-                address = ?, city = ?, state = ?, zipcode = ?, is_verified = ?
+                phone = ?, address = ?, city = ?, state = ?, zipcode = ?, is_verified = ?
             WHERE user_id = ?
         """;
 
@@ -122,12 +123,13 @@ public class UserDAO {
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getPassword()); // hash before update
             ps.setString(4, user.getGender());
-            ps.setString(5, user.getAddress());
-            ps.setString(6, user.getCity());
-            ps.setString(7, user.getState());
-            ps.setString(8, user.getZipcode());
-            ps.setBoolean(9, user.isVerified());
-            ps.setInt(10, user.getUserId());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getAddress());
+            ps.setString(7, user.getCity());
+            ps.setString(8, user.getState());
+            ps.setString(9, user.getZipcode());
+            ps.setBoolean(10, user.isVerified());
+            ps.setInt(11, user.getUserId());
 
             return ps.executeUpdate() > 0;
 
@@ -161,6 +163,7 @@ public class UserDAO {
         u.setLastName(rs.getString("last_name"));
         u.setPassword(rs.getString("password"));
         u.setEmail(rs.getString("email"));
+        u.setPhone(rs.getString("phone"));
         u.setGender(rs.getString("gender"));
         u.setAddress(rs.getString("address"));
         u.setCity(rs.getString("city"));
