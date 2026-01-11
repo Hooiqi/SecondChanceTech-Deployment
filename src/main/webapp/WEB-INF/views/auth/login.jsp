@@ -90,17 +90,6 @@
             <div class="error-banner"><%= error %></div>
             <% } %>
 
-            <a
-              href="#"
-              style="
-                text-align: right;
-                display: block;
-                color: var(--text-primary);
-              "
-            >
-              Forgot Password?
-            </a>
-
             <button
               type="submit"
               class="submit-btn"

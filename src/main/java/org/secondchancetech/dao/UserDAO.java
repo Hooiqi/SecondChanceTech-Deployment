@@ -9,41 +9,63 @@ import java.util.List;
 
 public class UserDAO {
 
+    // ---------- LOGIN HELPER (NEW) ----------
+    public User getUserByEmailAndPassword(String email, String password) {
+        String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
+        User user = null;
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = mapRow(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     // ---------- CREATE ----------
     public int createUser(User user) throws SQLException {
+        // Added 'role' to insert if you want, otherwise it defaults to 'customer' in DB
         String sql = """
-        INSERT INTO user
-        (first_name, last_name, password, email, gender, phone, address, city, state, zipcode, is_verified)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """;
+            INSERT INTO user
+            (first_name, last_name, password, email, gender, phone, address, city, state, zipcode, is_verified)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getPassword()); // hash it before saving!
+            ps.setString(3, user.getPassword());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getGender());
             ps.setString(6, user.getPhone());
-            ps.setString(6, user.getAddress());
-            ps.setString(7, user.getCity());
-            ps.setString(8, user.getState());
-            ps.setString(9, user.getZipcode());
-            ps.setBoolean(10, user.isVerified());
+            ps.setString(7, user.getAddress()); // Fixed index (was 6)
+            ps.setString(8, user.getCity());
+            ps.setString(9, user.getState());
+            ps.setString(10, user.getZipcode());
+            ps.setBoolean(11, user.isVerified());
 
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1); // return the generated user ID
+                    return rs.getInt(1);
                 } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
         }
     }
-
 
     // ---------- READ ----------
     public User getUserById(int userId) {
@@ -59,11 +81,9 @@ public class UserDAO {
                     user = mapRow(rs);
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return user;
     }
 
@@ -80,11 +100,9 @@ public class UserDAO {
                     user = mapRow(rs);
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return user;
     }
 
@@ -99,11 +117,9 @@ public class UserDAO {
             while (rs.next()) {
                 list.add(mapRow(rs));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return list;
     }
 
@@ -121,7 +137,7 @@ public class UserDAO {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getPassword()); // hash before update
+            ps.setString(3, user.getPassword());
             ps.setString(4, user.getGender());
             ps.setString(5, user.getPhone());
             ps.setString(6, user.getAddress());
@@ -132,7 +148,6 @@ public class UserDAO {
             ps.setInt(11, user.getUserId());
 
             return ps.executeUpdate() > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -148,14 +163,13 @@ public class UserDAO {
 
             ps.setInt(1, userId);
             return ps.executeUpdate() > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    // ---------- MAPPER ----------
+    // ---------- MAPPER (CRITICAL UPDATE) ----------
     private User mapRow(ResultSet rs) throws SQLException {
         User u = new User();
         u.setUserId(rs.getInt("user_id"));
@@ -170,6 +184,14 @@ public class UserDAO {
         u.setState(rs.getString("state"));
         u.setZipcode(rs.getString("zipcode"));
         u.setVerified(rs.getBoolean("is_verified"));
+
+        try {
+            u.setRole(rs.getString("role"));
+        } catch (SQLException e) {
+            // Fallback if column missing
+            u.setRole("customer");
+        }
+
         return u;
     }
 }

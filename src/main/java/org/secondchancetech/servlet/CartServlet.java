@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/cart")
+@WebServlet("/shoppingcart")
 public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -19,6 +19,6 @@ public class CartServlet extends HttpServlet {
         CartDAO dao = new CartDAO();
         List<Cart> carts = dao.getAllCarts();
         req.setAttribute("carts", carts);
-        req.getRequestDispatcher("/jsp/cart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/shoppingcart.jsp").forward(req, resp);
     }
 }

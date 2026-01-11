@@ -2,49 +2,37 @@ package org.secondchancetech.dao;
 
 import org.secondchancetech.model.Spec;
 import org.secondchancetech.util.DBUtil;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpecDAO {
 
-    // ---------- CREATE ----------
-    public void createSpec(Spec spec) throws SQLException {
-        String sql = "INSERT INTO spec (gadget_id, spec_key) VALUES (?, ?)";
-
+    public List<Spec> getSpecsByProductId(int productId) {
+        List<Spec> list = new ArrayList<>();
+        String sql = "SELECT * FROM spec WHERE product_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, spec.getGadgetId());
-            ps.setString(2, spec.getSpecKey());
-            ps.executeUpdate();
-        }
-    }
-
-    // ---------- READ ----------
-    public Spec getSpecById(int specId) {
-        String sql = "SELECT * FROM spec WHERE gadget_spec_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, specId);
+            ps.setInt(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return mapRow(rs);
+                while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
     }
 
     public List<Spec> getSpecsByGadgetId(int gadgetId) {
         List<Spec> list = new ArrayList<>();
+        // Note: If gadget_id is null in your DB, this may return an empty list
         String sql = "SELECT * FROM spec WHERE gadget_id = ?";
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, gadgetId);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) list.add(mapRow(rs));
+                while (rs.next()) {
+                    list.add(mapRow(rs));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,51 +42,39 @@ public class SpecDAO {
 
     public List<Spec> getAllSpecs() {
         List<Spec> list = new ArrayList<>();
-        String sql = "SELECT * FROM spec ORDER BY gadget_id, spec_id";
+        // Order by product_id and then spec_id for a tidy list
+        String sql = "SELECT * FROM spec ORDER BY product_id, spec_id";
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) list.add(mapRow(rs));
+            while (rs.next()) {
+                list.add(mapRow(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    // ---------- UPDATE ----------
-    public boolean updateSpec(Spec spec) {
-        String sql = "UPDATE spec SET spec_key = ? WHERE spec_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, spec.getSpecKey());
-            ps.setInt(2, spec.getSpecId());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // ---------- DELETE ----------
-    public boolean deleteSpec(int specId) {
-        String sql = "DELETE FROM spec WHERE spec_id = ?";
+    public Spec getSpecById(int specId) {
+        String sql = "SELECT * FROM spec WHERE spec_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, specId);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
     }
 
-    // ---------- MAPPER ----------
     private Spec mapRow(ResultSet rs) throws SQLException {
         Spec s = new Spec();
-        s.setSpecId(rs.getInt("gadget_spec_id"));
-        s.setGadgetId(rs.getInt("gadget_id"));
-        s.setSpecKey(rs.getString("spec_key"));
+        s.setSpecId(rs.getInt("spec_id"));
+        s.setProductId(rs.getInt("product_id"));
+        s.setSpecKey(rs.getString("key"));   // DB column 'key'
+        s.setSpecValue(rs.getString("value")); // DB column 'value'
         return s;
     }
 }

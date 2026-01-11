@@ -90,6 +90,15 @@
       flex-direction: column;
     }
 
+    .j-input {
+        color: #000000;
+        background-color: #ffffff;
+    }
+
+    .j-input option {
+        color: #000000;
+    }
+
     .full {
       grid-column: span 2;
     }
@@ -102,7 +111,7 @@
   <!-- LEFT BRANDING -->
   <div class="left">
     <img
-      src="${pageContext.request.contextPath}/assets/logo.png"
+      src="${pageContext.request.contextPath}/assets/logo about.png"
       alt="Logo"
     />
     <div class="brand-title">
@@ -140,7 +149,7 @@
 
         <div class="form-group">
           <label>Gender</label>
-          <select class="j-input" name="gender">
+          <select class="j-input" name="gender" >
             <option value="">Select Gender</option>
             <option value="Male" ${user.gender == 'Male' ? 'selected' : ''}>Male</option>
             <option value="Female" ${user.gender == 'Female' ? 'selected' : ''}>Female</option>
