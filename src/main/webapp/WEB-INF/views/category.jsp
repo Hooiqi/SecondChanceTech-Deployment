@@ -1,5 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
+
+<%
+    // --- FIX: PREPARE CHECKED BOXES LOGIC HERE ---
+    // We create a List of the selected specs to make checking them easier in the HTML below.
+    String[] specsParam = request.getParameterValues("specs");
+    List<String> specsList = new ArrayList<>();
+    if (specsParam != null) {
+        specsList = Arrays.asList(specsParam);
+    }
+    request.setAttribute("specsList", specsList);
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,122 +34,150 @@
 
 <main class="category-page">
 
-    <!-- Breadcrumb -->
     <nav class="breadcrumb">
         <a href="${pageContext.request.contextPath}/home">Home</a>
         <span>&gt;</span>
         <span class="current-category">${categoryTitle}</span>
     </nav>
 
-    <!-- Listing -->
-     <div class="category-layout">
-        <aside class="filter-sidebar">
-            <div class="filter-group">
-                <h3 class="filter-title">Price</h3>
-                <div class="filter-content price-inputs">
-                    <input type="number" id="min-price" name="minPrice" placeholder="From" value="0">
-                    <input type="number" id="max-price" name="maxPrice" placeholder="To" value="0">
-                </div>
-            </div>
+    <div class="category-layout">
 
-            <div>
-                <%-- Filters for PHONES --%>
+        <aside class="filter-sidebar">
+            <form action="gadgets" method="get">
+
+                <input type="hidden" name="type" value="${param.type}">
+                <input type="hidden" name="search" value="${param.search}">
+
+                <div class="filter-group">
+                    <h3 class="filter-title">Price</h3>
+                    <div class="filter-content price-inputs">
+                        <input type="number" name="minPrice" class="form-control" placeholder="From" value="${param.minPrice}">
+                        <input type="number" name="maxPrice" class="form-control" placeholder="To" value="${param.maxPrice}">
+                    </div>
+                </div>
+
+                <c:if test="${categoryTitle == 'SMARTPHONE'}">
+                    <div class="filter-group">
+                        <h3 class="filter-title">Storage</h3>
+                        <div class="checkbox-list">
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="128GB" ${specsList.contains('128GB') ? 'checked' : ''}> 128GB</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="256GB" ${specsList.contains('256GB') ? 'checked' : ''}> 256GB</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="512GB" ${specsList.contains('512GB') ? 'checked' : ''}> 512GB</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Operating System</h3>
+                        <div class="checkbox-list">
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="Android" ${specsList.contains('Android') ? 'checked' : ''}> Android</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="iOS" ${specsList.contains('iOS') ? 'checked' : ''}> iOS</label>
+                        </div>
+                    </div>
+                </c:if>
+
+                <c:if test="${categoryTitle == 'LAPTOP'}">
                     <div class="filter-group">
                         <h3 class="filter-title">RAM</h3>
                         <div class="checkbox-list">
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="8GB"> 8GB</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="12GB"> 12GB</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="16GB"> 16GB</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="8GB" ${specsList.contains('8GB') ? 'checked' : ''}> 8GB</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="16GB" ${specsList.contains('16GB') ? 'checked' : ''}> 16GB</label>
                         </div>
                     </div>
                     <div class="filter-group">
                         <h3 class="filter-title">Storage</h3>
                         <div class="checkbox-list">
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="128GB"> 128GB</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="256GB"> 256GB</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="512GB"> 512GB</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="256GB SSD" ${specsList.contains('256GB SSD') ? 'checked' : ''}> 256GB SSD</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="512GB SSD" ${specsList.contains('512GB SSD') ? 'checked' : ''}> 512GB SSD</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="1TB SSD" ${specsList.contains('1TB SSD') ? 'checked' : ''}> 1TB SSD</label>
                         </div>
                     </div>
+                </c:if>
 
-                <%-- Filters for CAMERAS --%>
+                <c:if test="${categoryTitle == 'CAMERA'}">
                     <div class="filter-group">
-                        <h3 class="filter-title">Resolution</h3>
+                        <h3 class="filter-title">Video Quality</h3>
                         <div class="checkbox-list">
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="20MP"> 20MP</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="24MP"> 24MP</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="45MP"> 45MP</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="4K 60p" ${specsList.contains('4K 60p') ? 'checked' : ''}> 4K 60p</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="6.2K 30p" ${specsList.contains('6.2K 30p') ? 'checked' : ''}> 6.2K 30p</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="5.7K 60p" ${specsList.contains('5.7K 60p') ? 'checked' : ''}> 5.7K 60p</label>
                         </div>
                     </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Sensor Size</h3>
+                        <div class="checkbox-list">
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="Full Frame" ${specsList.contains('Full Frame') ? 'checked' : ''}> Full Frame</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="APS-C" ${specsList.contains('APS-C') ? 'checked' : ''}> APS-C</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="Micro 4/3" ${specsList.contains('Micro 4/3') ? 'checked' : ''}> Micro 4/3</label>
+                        </div>
+                    </div>
+                </c:if>
 
-                <%-- Default: Show Brand for other categories --%>
+                <c:if test="${categoryTitle == 'HEADPHONE'}">
                     <div class="filter-group">
-                        <h3 class="filter-title">Brand</h3>
+                        <h3 class="filter-title">Type</h3>
                         <div class="checkbox-list">
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="Apple"> Apple</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="Samsung"> Samsung</label>
-                            <label class="checkbox-item"><input type="checkbox" name="spec" value="Sony"> Sony</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="Over-Ear" ${specsList.contains('Over-Ear') ? 'checked' : ''}> Over-Ear</label>
                         </div>
                     </div>
-                </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Noise Cancellation</h3>
+                        <div class="checkbox-list">
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="Yes" ${specsList.contains('Yes') ? 'checked' : ''}> Yes (ANC)</label>
+                        </div>
+                    </div>
+                </c:if>
+
+                <c:if test="${categoryTitle == 'WATCH'}">
+                    <div class="filter-group">
+                        <h3 class="filter-title">Connectivity</h3>
+                        <div class="checkbox-list">
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="GPS + Cellular" ${specsList.contains('GPS + Cellular') ? 'checked' : ''}> GPS + Cellular</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="Bluetooth" ${specsList.contains('Bluetooth') ? 'checked' : ''}> Bluetooth</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="GPS, Bluetooth" ${specsList.contains('GPS, Bluetooth') ? 'checked' : ''}> GPS, Bluetooth</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Water Resistance</h3>
+                        <div class="checkbox-list">
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="50m" ${specsList.contains('50m') ? 'checked' : ''}> 50m</label>
+                            <label class="checkbox-item"><input type="checkbox" name="specs" value="100m" ${specsList.contains('100m') ? 'checked' : ''}> 100m</label>
+                        </div>
+                    </div>
+                </c:if>
 
                 <div class="filter-actions-container">
-                    <button type="button" class="btn-primary-filter" style="background:rgb(15, 63, 134);" onclick="applyFilters()">Apply Filters</button>
-                    <button type="button" class="btn-secondary-filter" style="background:lightgray;" onclick="resetFilters()">Reset All</button>
+                    <button type="submit" class="btn-primary-filter" style="background:rgb(15, 63, 134);">Apply Filters</button>
+
+                    <c:choose>
+                        <c:when test="${not empty param.search}">
+                            <a href="gadgets?search=${param.search}" class="btn-secondary-filter" style="background:lightgray; text-align:center; text-decoration:none; padding: 10px;">Reset All</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="gadgets?type=${param.type}" class="btn-secondary-filter" style="background:lightgray; text-align:center; text-decoration:none; padding: 10px;">Reset All</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
-                <script>
-                function applyFilters() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const type = urlParams.get('type') || '';
-                    const search = urlParams.get('search') || '';
-                    const minPrice = document.getElementById('min-price').value;
-                    const maxPrice = document.getElementById('max-price').value;
-
-                    const checkedSpecs = Array.from(document.querySelectorAll('input[name="spec"]:checked'))
-                                            .map(cb => cb.value)
-                                            .join(',');
-
-                    // Build query params dynamically, only include non-empty
-                    let query = [];
-                    if (search) query.push("search=" + encodeURIComponent(search));
-                    if (type) query.push("type=" + encodeURIComponent(type));
-                    if (minPrice) query.push("minPrice=" + encodeURIComponent(minPrice));
-                    if (maxPrice) query.push("maxPrice=" + encodeURIComponent(maxPrice));
-                    if (checkedSpecs) query.push("specs=" + encodeURIComponent(checkedSpecs));
-
-                    // Redirect
-                    window.location.href = "gadgets" + (query.length > 0 ? "?" + query.join("&") : "");
-                }
-                function resetFilters() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    window.location.href = `gadgets?search=${urlParams.get('search') || ''}`;
-                }
-                </script>
+            </form>
         </aside>
 
          <section class="product-listing">
-     
+
              <div class="listing-toolbar">
                  <p>
                      Products Found:
                      <strong>${products.size()}</strong>
                  </p>
-
-                <a href ="products/add-product"  type="button" class="btn-primary-filter"  style="margin-left:20px; background:green; color:white;"  >
-                    Add New Product
-                </a>
              </div>
-     
+
              <div class="category-grid">
-     
+
                 <c:forEach var="item" items="${products}">
                     <a href="${pageContext.request.contextPath}/products/${item.productId}"
                     style="text-decoration: none; color: inherit;">
                         <div class="product-card reveal">
 
                             <div class="product-image">
-                                <img src="${pageContext.request.contextPath}/${item.imagePath}"
-                                    alt="${item.name}">
+                                <img src="${pageContext.request.contextPath}/assets${item.imagePath.startsWith('/') ? '' : '/'}${item.imagePath}" alt="${item.name}">
                             </div>
 
                             <div class="product-info">
@@ -147,11 +189,10 @@
                     </a>
                 </c:forEach>
 
-     
                  <c:if test="${empty products}">
                      <p class="no-data">No products found.</p>
                  </c:if>
-     
+
              </div>
          </section>
      </div>

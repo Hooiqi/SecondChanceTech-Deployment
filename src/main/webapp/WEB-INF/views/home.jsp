@@ -28,34 +28,46 @@
         </section>
 
 、       <section class="category-section">
-            <h2 class="section-title">Browse By Category</h2>
-            <div class="category-grid">
-                <a href="${pageContext.request.contextPath}/gadgets?type=phones" class="category-card">
-                    <img src="${pageContext.request.contextPath}/assets/icon phone.png" alt="Phones">
-                    <span>Phones</span>
-                </a>
+                    <h2 class="section-title">Browse by Category</h2>
+                    <div class="category-grid">
 
-                <a href="${pageContext.request.contextPath}/gadgets?type=watches" class="category-card">
-                    <img src="${pageContext.request.contextPath}/assets/icon watch.png" alt="Smart Watches">
-                    <span>Smart Watches</span>
-                </a>
+                        <div class="category-card" onclick="location.href='${pageContext.request.contextPath}/gadgets?search=Smartphone'">
+                            <div class="category-icon">
+                                <img src="${pageContext.request.contextPath}/assets/icon phone.png" alt="Phones">
+                            </div>
+                            <p class="category-name">Phones</p>
+                        </div>
 
-                <a href="${pageContext.request.contextPath}/gadgets?type=cameras" class="category-card">
-                    <img src="${pageContext.request.contextPath}/assets/icon camera.png" alt="Cameras">
-                    <span>Cameras</span>
-                </a>
+                        <div class="category-card" onclick="location.href='${pageContext.request.contextPath}/gadgets?search=Laptop'">
+                            <div class="category-icon">
+                                <img src="${pageContext.request.contextPath}/assets/icon computer.png" alt="Laptops">
+                            </div>
+                            <p class="category-name">Laptops</p>
+                        </div>
 
-                <a href="${pageContext.request.contextPath}/gadgets?type=headphones" class="category-card">
-                    <img src="${pageContext.request.contextPath}/assets/icon headphone.png" alt="Headphones">
-                    <span>Headphones</span>
-                </a>
+                        <div class="category-card" onclick="location.href='${pageContext.request.contextPath}/gadgets?search=Watch'">
+                            <div class="category-icon">
+                                <img src="${pageContext.request.contextPath}/assets/icon watch.png" alt="Watches">
+                            </div>
+                            <p class="category-name">Watches</p>
+                        </div>
 
-                <a href="${pageContext.request.contextPath}/gadgets?type=computers" class="category-card">
-                    <img src="${pageContext.request.contextPath}/assets/icon computer.png" alt="Computers">
-                    <span>Computers</span>
-                </a>
-            </div>
-        </section>
+                        <div class="category-card" onclick="location.href='${pageContext.request.contextPath}/gadgets?search=Camera'">
+                            <div class="category-icon">
+                                <img src="${pageContext.request.contextPath}/assets/icon camera.png" alt="Cameras">
+                            </div>
+                            <p class="category-name">Cameras</p>
+                        </div>
+
+                        <div class="category-card" onclick="location.href='${pageContext.request.contextPath}/gadgets?search=Headphone'">
+                            <div class="category-icon">
+                                <img src="${pageContext.request.contextPath}/assets/icon headphone.png" alt="Audio">
+                            </div>
+                            <p class="category-name">Audio</p>
+                        </div>
+
+                    </div>
+                </section>
 
         <section class="products-container">
             <div class="product-tabs">
@@ -75,7 +87,7 @@
                                 <p class="product-name">${item.name}</p>
                                 <p class="product-price">RM ${item.price}</p>
                                 <%-- Use gadgetId to ensure the ProductServlet finds the right record --%>
-                                <button class="buy-btn" onclick="location.href='${pageContext.request.contextPath}/product-details?id=${item.gadgetId}'">Buy Now</button>
+                                <button class="buy-btn" onclick="location.href='${pageContext.request.contextPath}/products/${item.productId}'">View</button>
                             </div>
                         </div>
                     </c:forEach>
@@ -94,9 +106,9 @@
                                  <img src="${pageContext.request.contextPath}/assets${item.imagePath}" alt="${item.name}">
                             </div>
                             <div class="product-info">
-                                <p class="product-name">Product ID: ${item.productId}</p>
+                                <p class="product-name">${item.name}</p>
                                 <p class="product-price">RM ${item.price}</p>
-                                <button class="buy-btn" onclick="location.href='${pageContext.request.contextPath}/ProductServlet?id=${item.productId}'">Buy Now</button>
+                                <button class="buy-btn" onclick="location.href='${pageContext.request.contextPath}/products/${item.productId}'">View</button>
                             </div>
                         </div>
                     </c:forEach>
@@ -104,23 +116,6 @@
             </div>
         </section>
 
-        <section class="products-container grey-bg">
-            <h2 class="section-heading">Best Condition</h2>
-            <div class="product-grid">
-                <c:forEach var="item" items="${products}">
-                    <div class="product-card reveal">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/assets${item.imagePath}" alt="${item.name}">
-                        </div>
-                        <div class="product-info">
-                            <p class="product-name">Product ID: ${item.productId}</p>
-                            <p class="product-price">RM ${item.price}</p>
-                            <button class="buy-btn">Buy Now</button>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-        </section>
     </main>
 
     <jsp:include page="footer.jsp" />

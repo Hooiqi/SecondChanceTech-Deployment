@@ -1,6 +1,7 @@
 package org.secondchancetech.util;
 
 import java.io.File;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,17 +13,28 @@ public class DBUtil {
     static {
         try {
             Class.forName("org.sqlite.JDBC");
+            URL resource = DBUtil.class.getClassLoader().getResource("app.db");
 
-            // dynamic cross-platform path
-            String userHome = System.getProperty("user.home");
-            File folder = new File(userHome + "/secondchancetech");
-            if (!folder.exists()) folder.mkdirs();
+            String dbPath = "";
 
-            DB_URL = "jdbc:sqlite:" + folder.getAbsolutePath() + "/app.db";
-            System.out.println("SQLite DB path: " + DB_URL); // debug
+            if (resource != null) {
+                dbPath = new File(resource.toURI()).getAbsolutePath();
+            } else {
+                String userDir = System.getProperty("user.dir");
+                dbPath = userDir + "/src/main/resources/app.db";
+                System.out.println("⚠️ Warning: DB not found in classpath. Trying source folder: " + dbPath);
+            }
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("SQLite JDBC not found", e);
+            // 2. Connect to that dynamic path
+            DB_URL = "jdbc:sqlite:" + dbPath;
+
+            System.out.println("------------------------------------------------");
+            System.out.println("✅ Dynamic DB Path: " + dbPath);
+            System.out.println("------------------------------------------------");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error initializing Database Connection", e);
         }
     }
 

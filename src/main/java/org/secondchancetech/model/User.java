@@ -14,6 +14,7 @@ public class User {
     private String state;
     private String zipcode;
     private boolean isVerified;
+    private String role;
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
@@ -39,4 +40,6 @@ public class User {
     public void setZipcode(String zipcode) { this.zipcode = zipcode; }
     public boolean isVerified() { return isVerified; }
     public void setVerified(boolean verified) { isVerified = verified; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }
