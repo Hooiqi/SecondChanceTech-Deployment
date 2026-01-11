@@ -36,8 +36,7 @@ public class AuthService {
         User user = userDAO.getUserByEmail(email);
         if (user == null) return null;
 
-        // compare password
-        if (PasswordUtil.checkPassword(password, user.getPassword())) {
+        if (password.equals(user.getPassword())) {
             return user; // login success
         } else {
             return null; // invalid password

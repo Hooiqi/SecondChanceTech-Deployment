@@ -40,7 +40,7 @@ public class AddProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // Get all gadgets
+        // 1. Fetch data for the dropdowns
         List<Gadget> gadgets = gadgetDAO.getAllGadgets();
         req.setAttribute("gadgets", gadgets);
 
@@ -54,8 +54,6 @@ public class AddProductServlet extends HttpServlet {
                 .forward(req, resp);
     }
 
-
-    // Handle form submission
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

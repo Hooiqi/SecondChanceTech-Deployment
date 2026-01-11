@@ -17,34 +17,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/admin")
+@WebServlet("/admin/dashboard")
 public class AdminServlet extends HttpServlet {
 
-    private ProductDAO productDAO = new ProductDAO();
-    private GadgetDAO gadgetDAO = new GadgetDAO();
+    private final ProductDAO productDAO = new ProductDAO();
+    private final GadgetDAO gadgetDAO = new GadgetDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // --- SECURITY CHECK START ---
+        // --- 1. SECURITY CHECK ---
         HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
+        // Match the attribute name "currentUser" used in your LoginServlet
+        User user = (User) session.getAttribute("currentUser");
 
-        if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-            // User is not logged in OR is not an admin -> Kick them to login
-            resp.sendRedirect("login");
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        // --- SECURITY CHECK END ---
 
-        // 1. Fetch all data
+        // --- 2. DATA FETCHING ---
         List<Product> products = productDAO.getAllProducts();
         List<Gadget> gadgets = gadgetDAO.getAllGadgets();
 
-        // 2. Calculate Total Products
+        // --- 3. DASHBOARD STATISTICS CALCULATION ---
         int totalProducts = products.size();
+        int totalCategories = gadgets.size();
 
-        // 3. Calculate Products per Category (Gadget)
+        // Map category (Gadget) names to the count of products in each
         Map<String, Integer> categoryStats = new HashMap<>();
         Map<Integer, String> gadgetNames = new HashMap<>();
 
@@ -60,30 +60,29 @@ public class AdminServlet extends HttpServlet {
             }
         }
 
-        // 4. Send data to JSP
+        // --- 4. SEND DATA TO JSP ---
+        // These names must match the ${name} used in your admin.jsp file
         req.setAttribute("totalProducts", totalProducts);
+        req.setAttribute("totalCategories", totalCategories);
         req.setAttribute("categoryStats", categoryStats);
         req.setAttribute("products", products);
+        req.setAttribute("gadgets", gadgets);
 
+        // Forward to the JSP inside the private WEB-INF folder
         req.getRequestDispatcher("/WEB-INF/views/admin.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        // --- SECURITY CHECK START (Also protect POST actions) ---
         HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("currentUser");
 
-        if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-            resp.sendRedirect("login");
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        // --- SECURITY CHECK END ---
 
         String action = req.getParameter("action");
-
-        // Handle DELETE Product
         if ("delete".equals(action)) {
             try {
                 int productId = Integer.parseInt(req.getParameter("id"));
@@ -93,7 +92,7 @@ public class AdminServlet extends HttpServlet {
             }
         }
 
-        // Refresh the page
-        resp.sendRedirect("admin");
+        // After an action, redirect back to the dashboard to refresh data
+        resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
     }
 }

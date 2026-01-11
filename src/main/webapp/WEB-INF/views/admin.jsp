@@ -77,7 +77,7 @@
 
     <hr style="border: 0; border-top: 1px solid #ddd; margin: 30px 0;">
 
-    <a href="add_product.jsp" class="btn btn-add">+ Add New Product</a>
+    <a href="${pageContext.request.contextPath}/products/add-product" class="btn btn-add">+ Add New Product</a>
 
     <table>
         <thead>

@@ -102,7 +102,7 @@
   <!-- LEFT BRANDING -->
   <div class="left">
     <img
-      src="${pageContext.request.contextPath}/assets/logo.png"
+      src="${pageContext.request.contextPath}/assets/logo about.png"
       alt="Logo"
     />
     <div class="brand-title">
